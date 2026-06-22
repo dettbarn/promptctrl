@@ -1,0 +1,7 @@
+# contains actual local paths
+docs/superpowers
+
+# content
+promptctrl.json
+opencode.md
+copilot.md
