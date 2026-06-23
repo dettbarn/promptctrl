@@ -6,3 +6,6 @@ promptctrl.json
 *.md
 !README.md
 *.md.backup.*
+
+# IDE
+.idea

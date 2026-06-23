@@ -49,7 +49,7 @@ for key in $keys; do
         echo "Changes detected for $key"
         # Create backup with timestamp in dev directory
         timestamp=$(date +%Y%m%d_%H%M%S)
-        backup_filename="$(basename "$prod_path").backup.${timestamp}"
+        backup_filename=$key"_$(basename "$prod_path").backup.${timestamp}"
         backup_path="$(dirname "$dev_path")/$backup_filename"
         cp "$prod_path" "$backup_path"
         echo "Backup created: $backup_path"
