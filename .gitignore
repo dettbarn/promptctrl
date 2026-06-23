@@ -1,0 +1,8 @@
+# contains actual local paths
+docs/superpowers
+
+# content
+promptctrl.json
+*.md
+!README.md
+*.md.backup.*
