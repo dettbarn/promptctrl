@@ -3,5 +3,6 @@ docs/superpowers
 
 # content
 promptctrl.json
-opencode.md
-copilot.md
+*.md
+!README.md
+*.md.backup.*
