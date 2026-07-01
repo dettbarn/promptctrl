@@ -50,7 +50,7 @@ for key in $keys; do
         # Create backup with timestamp in dev directory
         timestamp=$(date +%Y%m%d_%H%M%S)
         backup_filename=$key"_$(basename "$prod_path").backup.${timestamp}"
-        backup_path="$(dirname "$dev_path")/$backup_filename"
+        backup_path="$(dirname "$dev_path")/backup/$backup_filename"
         cp "$prod_path" "$backup_path"
         echo "Backup created: $backup_path"
         # Deploy

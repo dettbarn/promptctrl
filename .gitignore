@@ -5,7 +5,8 @@ docs/superpowers
 promptctrl.json
 *.md
 !README.md
-*.md.backup.*
+*.jsonc
+*.backup.*
 
 # IDE
 .idea
