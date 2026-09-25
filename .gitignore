@@ -4,6 +4,7 @@ docs/superpowers
 # content
 promptctrl.json
 *.md
+*.mdc
 !README.md
 *.jsonc
 *.backup.*
