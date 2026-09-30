@@ -2,6 +2,14 @@
 set -euo pipefail
 
 CONFIG_FILE="promptctrl.json"
+DRY_RUN=false
+
+for arg in "$@"; do
+    case "$arg" in
+        -n|--dry-run) DRY_RUN=true ;;
+        *) echo "Usage: $0 [-n|--dry-run]"; exit 1 ;;
+    esac
+done
 
 # Resolve config file path relative to script location
 CONFIG_DIR="$(cd "$(dirname "$CONFIG_FILE")" && pwd)"
@@ -35,6 +43,18 @@ for key in $keys; do
 
     if [[ ! -f "$dev_path" ]]; then
         echo "Warning: Dev file $dev_path not found, skipping $key"
+        continue
+    fi
+
+    if [[ "$DRY_RUN" == true ]]; then
+        if [[ ! -f "$prod_path" ]]; then
+            echo "Dry run: $key would be created at $prod_path"
+        elif diff -q "$dev_path" "$prod_path" > /dev/null 2>&1; then
+            echo "No changes for $key"
+        else
+            echo "Dry run: changes for $key (< dev, > prod)"
+            diff "$dev_path" "$prod_path" || true
+        fi
         continue
     fi
 
