@@ -2,6 +2,14 @@
 set -euo pipefail
 
 CONFIG_FILE="promptctrl.json"
+DRY_RUN=false
+
+for arg in "$@"; do
+    case "$arg" in
+        -n|--dry-run) DRY_RUN=true ;;
+        *) echo "Usage: $0 [-n|--dry-run]"; exit 1 ;;
+    esac
+done
 
 # Resolve config file path relative to script location
 CONFIG_DIR="$(cd "$(dirname "$CONFIG_FILE")" && pwd)"
@@ -38,6 +46,18 @@ for key in $keys; do
         continue
     fi
 
+    if [[ "$DRY_RUN" == true ]]; then
+        if [[ ! -f "$prod_path" ]]; then
+            echo "Dry run: $key would be created at $prod_path"
+        elif diff -q "$dev_path" "$prod_path" > /dev/null 2>&1; then
+            echo "No changes for $key"
+        else
+            echo "Dry run: changes for $key (< dev, > prod)"
+            diff "$dev_path" "$prod_path" || true
+        fi
+        continue
+    fi
+
     if [[ ! -f "$prod_path" ]]; then
         echo "Prod file $prod_path does not exist, copying from dev"
         cp "$dev_path" "$prod_path"
@@ -50,7 +70,7 @@ for key in $keys; do
         # Create backup with timestamp in dev directory
         timestamp=$(date +%Y%m%d_%H%M%S)
         backup_filename=$key"_$(basename "$prod_path").backup.${timestamp}"
-        backup_path="$(dirname "$dev_path")/backup/$backup_filename"
+        backup_path="$(dirname "$CONFIG_FILE")/backup/$backup_filename"
         cp "$prod_path" "$backup_path"
         echo "Backup created: $backup_path"
         # Deploy

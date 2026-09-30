@@ -32,3 +32,13 @@ touch promptctrl.json
 ```
 
 3. Now you're set up. ✅ From now on, all you have to do is `make deploy` to update all your "prod" system prompts. Backups will be created in the backup subfolder.
+
+## Dry run
+
+To preview what `make deploy` would change without touching anything, run:
+
+```bash
+make deploy DRY_RUN=1
+```
+
+This prints the diff between each "dev" and "prod" prompt (`<` lines are from dev, `>` lines from prod). No files are copied and no backups are created.
