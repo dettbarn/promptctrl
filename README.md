@@ -42,3 +42,11 @@ make deploy DRY_RUN=1
 ```
 
 This prints the diff between each "dev" and "prod" prompt (`<` lines are from dev, `>` lines from prod). No files are copied and no backups are created.
+
+## Tests
+
+```bash
+make test
+```
+
+Runs `tests/run.sh` (requires `jq`). Each test executes a copy of `deploy.sh` in a throwaway temp directory with its own config, dev files, prod files and `backup/`, so your real dev files, backups and prod paths are never touched. A final check verifies that nothing in the repo changed.
