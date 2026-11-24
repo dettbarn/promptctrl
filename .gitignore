@@ -6,6 +6,8 @@ promptctrl.json
 *.md
 *.mdc
 !README.md
+!AGENTS.md
+!CLAUDE.md
 *.jsonc
 *.backup.*
 
