@@ -206,6 +206,20 @@ write_config a missing.md prod/a.md
 run_deploy -n
 assert_contains "$OUT" "Dev file" "warns about dev file"
 
+testcase "color: piped output is plain, FORCE_COLOR colors, NO_COLOR wins"
+new_sandbox
+echo "new" > dev.md; echo "old" > prod/a.md
+write_config a dev.md prod/a.md
+run_deploy
+assert_not_contains "$OUT" $'\e[' "no escape codes when not a terminal"
+echo "new" > prod/a.md; echo "newer" > dev.md
+OUT="$(FORCE_COLOR=1 HOME="$SB" bash "$SB/deploy.sh" 2>&1)"
+assert_contains "$OUT" $'\e[34m● Changes detected for a' "changes in blue"
+assert_contains "$OUT" $'\e[32m✔ Deployed a' "deployed in green"
+echo "newest" > dev.md
+OUT="$(NO_COLOR=1 FORCE_COLOR=1 HOME="$SB" bash "$SB/deploy.sh" 2>&1)"
+assert_not_contains "$OUT" $'\e[' "NO_COLOR disables colors"
+
 # --- final guard: real repo untouched ------------------------------------------
 
 testcase "isolation: real repo (dev files, backups, config) unchanged"

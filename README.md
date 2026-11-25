@@ -43,6 +43,10 @@ make deploy DRY_RUN=1
 
 This prints the diff between each "dev" and "prod" prompt (`<` lines are from dev, `>` lines from prod). No files are copied and no backups are created.
 
+## Colored output
+
+On a terminal, `make deploy` colors its output (blue `●` changes, green `✔` deployed, yellow `⚠` warnings, red `✖` errors). Set `NO_COLOR=1` to disable it, or `FORCE_COLOR=1` to keep colors when piping.
+
 ## Tests
 
 ```bash
